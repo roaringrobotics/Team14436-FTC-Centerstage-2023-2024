@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class yes extends LinearOpMode {
     //Hardware and variables
     DcMotor testMotor;
-
+// Yo tim does it work
     DcMotor testMotor1;
 
 

@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 @TeleOp
 public class FieldCentricDriveTest_I260AP extends LinearOpMode {
 
@@ -29,7 +32,8 @@ public class FieldCentricDriveTest_I260AP extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive() && !isStopRequested()) {
-            telemetry.addData("Degree: ", imu.getRobotAngularVelocity(AngleUnit.DEGREES));
+            telemetry.addData("Degree Internal: ", imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES));
+            telemetry.addData("Degree External: ", imu.getRobotOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES));
             telemetry.addData("Parameters: ", imu.getParameters());
             telemetry.update();
         }

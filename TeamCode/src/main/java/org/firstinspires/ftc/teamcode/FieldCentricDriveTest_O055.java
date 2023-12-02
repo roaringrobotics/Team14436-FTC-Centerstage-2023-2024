@@ -25,7 +25,7 @@ public class FieldCentricDriveTest_O055 extends LinearOpMode {
 
         waitForStart();
 
-        while(opModeIsActive() && !opModeIsActive()) {
+        while(opModeIsActive() && !isStopRequested()) {
             telemetry.addData("Degree: ", imu.getAngularOrientation());
             telemetry.addData("Parameters: ", imu.getParameters());
             telemetry.update();

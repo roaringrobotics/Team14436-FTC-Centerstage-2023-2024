@@ -28,7 +28,7 @@ public class FieldCentricDriveTest_I260AP extends LinearOpMode {
         
         waitForStart();
 
-        while(opModeIsActive() && !opModeIsActive()) {
+        while(opModeIsActive() && !isStopRequested()) {
             telemetry.addData("Degree: ", imu.getRobotAngularVelocity(AngleUnit.DEGREES));
             telemetry.addData("Parameters: ", imu.getParameters());
             telemetry.update();

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
-public class MecanumDriveTrain extends LinearOpMode{
+public class MecanumDriveTrain extends LinearOpMode {
     DcMotor backLeftMotor;
     DcMotor frontLeftMotor;
     DcMotor frontRightMotor;
@@ -19,50 +19,59 @@ public class MecanumDriveTrain extends LinearOpMode{
     DcMotor blueIntake;
 
 
-@Override
- public void runOpMode() throws InterruptedException{
-blueIntake = hardwareMap.get(DcMotor.class,"blueIntake");
-Bluelift = hardwareMap.get(DcMotor.class,"Bluelift");
-backRightMotor = hardwareMap.get(DcMotor.class,"backRightMotor");
-backLeftMotor= hardwareMap.get(DcMotor.class,"backLeftMotor");
-frontLeftMotor= hardwareMap.get(DcMotor.class,"frontLeftMotor");
-frontRightMotor= hardwareMap.get(DcMotor.class,"frontRightMotor");
+    @Override
+    public void runOpMode() throws InterruptedException {
+        blueIntake = hardwareMap.get(DcMotor.class, "blueIntake");
+        Bluelift = hardwareMap.get(DcMotor.class, "Bluelift");
+        backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
 
-frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-    IMU imu = hardwareMap.get(IMU.class,"imu");
+        IMU imu = hardwareMap.get(IMU.class, "imu");
 
-    IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-            RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-            RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
-    imu.initialize(parameters);
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        imu.initialize(parameters);
 
 
-waitForStart();
-while (opModeIsActive()){
-    double y = -gamepad1.left_stick_y;
-    double x = gamepad1.left_stick_x;
-    double rx = gamepad1.right_stick_x;
+        waitForStart();
+        while (opModeIsActive()) {
+            double y = -gamepad1.left_stick_y;
+            double x = gamepad1.left_stick_x;
+            double rx = gamepad1.right_stick_x;
 
-    double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-    double rotx = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-    double roty = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-    rotx = rotx * 1.1;
+            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+            rotX = rotX * 1.1;
 
-    double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
 
-    double frontLeftMotorPower = (rotY + rotX + rx) / denominator;
-    double frontRightMotorPower = (rotY - rotX - rx) / denominator;
-    double backLeftMotorPower = (rotY - rotX + rx) / denominator;
-    double backRightMotorPower = (rotY + rotX - rx) / denominator;
+            double frontLeftMotorPower = (rotY + rotX + rx) / denominator;
+            double frontRightMotorPower = (rotY - rotX - rx) / denominator;
+            double backLeftMotorPower = (rotY - rotX + rx) / denominator;
+            double backRightMotorPower = (rotY + rotX - rx) / denominator;
 
-    y = -gamepad1.left_stick_y;
-    x = gamepad1.left_stick_x;
-    rx = gamepad2.right_stick_x;
+            y = -gamepad1.left_stick_y;
+            x = gamepad1.left_stick_x;
+            rx = gamepad1.right_stick_x;
 
-    frontLeftMotor.setPower(y +);
+            frontLeftMotor.setPower(y + x + rx);
+            backLeftMotor.setPower(y - x + rx);
+            frontRightMotor.setPower(y - x - rx);
+            backRightMotor.setPower(y + x - rx);
 
+
+
+
+
+        }
+
+    }
 }
-

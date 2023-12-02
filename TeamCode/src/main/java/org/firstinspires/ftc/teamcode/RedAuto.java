@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
-public class yes extends LinearOpMode {
+public class RedAuto extends LinearOpMode {
     //Hardware and variables
     DcMotor testMotor;
 // Yo tim does it work

@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.BNO055IMUImpl;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
-
-public class FieldCentricDriveTest extends LinearOpMode {
+@TeleOp
+public class FieldCentricDriveTest_O055 extends LinearOpMode {
 
     DcMotorEx frontLeft, frontRight, backRight, backLeft, blueIntake, Bluelift;
     BNO055IMU imu;

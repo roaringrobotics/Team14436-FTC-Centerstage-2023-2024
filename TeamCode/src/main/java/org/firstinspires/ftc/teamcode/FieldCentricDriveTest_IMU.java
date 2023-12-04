@@ -15,10 +15,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 @TeleOp
-public class FieldCentricDriveTest_I260AP extends LinearOpMode {
+public class FieldCentricDriveTest_IMU extends LinearOpMode {
 
     DcMotorEx frontLeft, frontRight, backRight, backLeft, blueIntake, Bluelift;
-    BHI260IMU imu;
+    IMU imu;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -31,13 +31,12 @@ public class FieldCentricDriveTest_I260AP extends LinearOpMode {
         imu = hardwareMap.get(BHI260IMU.class, "imu");
 
 
-        
+
         waitForStart();
 
         while(opModeIsActive() && !isStopRequested()) {
             telemetry.addData("Degree Internal: ", imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES));
             telemetry.addData("Degree External: ", imu.getRobotOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES));
-            telemetry.addData("Parameters: ", imu.getParameters());
             telemetry.update();
         }
 

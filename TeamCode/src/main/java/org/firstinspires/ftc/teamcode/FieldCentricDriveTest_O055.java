@@ -22,11 +22,16 @@ public class FieldCentricDriveTest_O055 extends LinearOpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imu.initialize(parameters);
+
+
 
         waitForStart();
 
         while(opModeIsActive() && !isStopRequested()) {
-            telemetry.addData("Degree: ", imu.getAngularOrientation());
+            telemetry.addData("Degree (First): ", imu.getAngularOrientation().firstAngle);
+            telemetry.addData("Degree (Second): ", imu.getAngularOrientation().secondAngle);
+            telemetry.addData("Degree (Third): ", imu.getAngularOrientation().thirdAngle);
             telemetry.addData("Parameters: ", imu.getParameters());
             telemetry.update();
         }

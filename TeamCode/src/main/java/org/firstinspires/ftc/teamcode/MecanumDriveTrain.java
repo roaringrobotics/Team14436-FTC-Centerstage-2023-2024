@@ -11,25 +11,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
 public class MecanumDriveTrain extends LinearOpMode {
-    DcMotor backLeftMotor;
-    DcMotor frontLeftMotor;
-    DcMotor frontRightMotor;
-    DcMotor backRightMotor;
+    DcMotor backLeft;
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backRight;
     DcMotor Bluelift;
     DcMotor blueIntake;
+    DcMotor BlackLift;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
         blueIntake = hardwareMap.get(DcMotor.class, "blueIntake");
         Bluelift = hardwareMap.get(DcMotor.class, "Bluelift");
-        backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
-        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
-        frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        BlackLift = hardwareMap.get(DcMotor.class, "Blacklift");
 
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
@@ -53,19 +55,36 @@ public class MecanumDriveTrain extends LinearOpMode {
 
             double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
 
-            double frontLeftMotorPower = (rotY + rotX + rx) / denominator;
-            double frontRightMotorPower = (rotY - rotX - rx) / denominator;
-            double backLeftMotorPower = (rotY - rotX + rx) / denominator;
-            double backRightMotorPower = (rotY + rotX - rx) / denominator;
+            double frontLeftPower = (rotY + rotX + rx) / denominator;
+            double frontRightPower = (rotY - rotX - rx) / denominator;
+            double backLeftPower = (rotY - rotX + rx) / denominator;
+            double backRightPower = (rotY + rotX - rx) / denominator;
 
             y = -gamepad1.left_stick_y;
             x = gamepad1.left_stick_x;
             rx = gamepad1.right_stick_x;
 
-            frontLeftMotor.setPower(y + x + rx);
-            backLeftMotor.setPower(y - x + rx);
-            frontRightMotor.setPower(y - x - rx);
-            backRightMotor.setPower(y + x - rx);
+            frontLeft.setPower(y + x + rx);
+            backLeft.setPower(y - x + rx);
+            frontRight.setPower(y - x - rx);
+            backRight.setPower(y + x - rx);
+
+            if(gamepad1.dpad_down){
+                Bluelift.setPower(1);
+                BlackLift.setPower(-1);
+            }
+            else {
+                Bluelift.setPower(0);
+                BlackLift.setPower(0);
+            }
+            if (gamepad1.dpad_up){
+                Bluelift.setPower(-1);
+                BlackLift.setPower(1);
+            }
+            else {
+                Bluelift.setPower(0);
+                BlackLift.setPower(0);
+            }
 
 
 

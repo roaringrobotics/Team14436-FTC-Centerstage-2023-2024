@@ -32,18 +32,20 @@ public class RedAutoTriangleParking extends LinearOpMode {
 
             waitForStart();
 
-            while (run.startTimeNanoseconds() > 50) {
+            while (run.startTimeNanoseconds() > 0.75) {
                 fL.setPower(1);
                 fR.setPower(1);
                 bL.setPower(-1);
                 bR.setPower(-1);
             }
-            if (run.nanoseconds() == 0)
-            fL.setPower(0);
-            fR.setPower(0);
-            bL.setPower(0);
-            bR.setPower(0);
-        }
+                   if (run.nanoseconds() == 0) {
+                       fL.setPower(0);
+                       fR.setPower(0);
+                       bL.setPower(0);
+                       bR.setPower(0);
+                   }
+                   }
+
     }
 
 

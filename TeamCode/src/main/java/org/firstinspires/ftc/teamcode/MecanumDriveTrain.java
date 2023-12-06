@@ -69,6 +69,13 @@ public class MecanumDriveTrain extends LinearOpMode {
             frontRight.setPower(y - x - rx);
             backRight.setPower(y + x - rx);
 
+            if (gamepad1.a){
+                blueIntake.setPower(1);
+            }
+            else {
+                blueIntake.setPower(0);
+            }
+
             if(gamepad1.dpad_down){
                 Bluelift.setPower(1);
                 BlackLift.setPower(-1);

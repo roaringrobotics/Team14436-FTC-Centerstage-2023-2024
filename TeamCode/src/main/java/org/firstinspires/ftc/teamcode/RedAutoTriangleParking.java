@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
@@ -27,25 +28,36 @@ public class RedAutoTriangleParking extends LinearOpMode {
         fR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        bL.setDirection(DcMotorSimple.Direction.REVERSE);
+        bR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
         ElapsedTime run = new ElapsedTime();
 
 
-            waitForStart();
+        waitForStart();
 
-            while (run.startTimeNanoseconds() > 0.75) {
-                fL.setPower(1);
-                fR.setPower(1);
-                bL.setPower(-1);
-                bR.setPower(-1);
-            }
-                   if (run.nanoseconds() == 0) {
-                       fL.setPower(0);
-                       fR.setPower(0);
-                       bL.setPower(0);
-                       bR.setPower(0);
-                   }
-                   }
+        // Resets the timer upon starting
+        run.reset();
+
+        // While loop that moves to the left
+        // run.time should equal seconds
+        while (run.milliseconds() < 0.75 && !isStopRequested()) {
+            fL.setPower(-1);
+            fR.setPower(1);
+            bL.setPower(1);
+            bR.setPower(-1);
+        }
+
+        run.reset();
+
+        fL.setPower(0);
+        fR.setPower(0);
+        bL.setPower(0);
+        bR.setPower(0);
 
     }
+}
 
 

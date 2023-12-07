@@ -56,7 +56,7 @@ public class MecanumDriveTrain extends LinearOpMode {
         while (opModeIsActive()) {
 
             // TODO: TBH, I would have put this into its own method,
-            //  there should be a code called " " that goes over it.
+            //  there should be a code called "MecanumDriveTrainEXTIM" that goes over it.
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;

@@ -46,6 +46,7 @@ public class MecanumDriveTrainEXTIM extends LinearOpMode {
 
             /* This single line of code physically does the same thing as your 19 lines of code.
                 This method allows the driver to actually drive the robot.
+                
                 Just as I have stated in around line 80, the parameters x, y, and rx are then put in as
                 the stick inputs. Think of the x, y, and rx as abstract variables in math and you are now
                 putting values to those variables.

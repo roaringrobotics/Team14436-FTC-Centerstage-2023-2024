@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
-public class RedAutoTriangleParking extends LinearOpMode {
+public class BlueAutoBackdropParking extends LinearOpMode {
     //Hardware and variables
     DcMotor fL;
     // Yo tim does it work
@@ -30,7 +30,7 @@ public class RedAutoTriangleParking extends LinearOpMode {
         bL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         bL.setDirection(DcMotorSimple.Direction.REVERSE);
-        bR.setDirection(DcMotorSimple.Direction.REVERSE);
+        fL.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         ElapsedTime run = new ElapsedTime();
@@ -43,7 +43,7 @@ public class RedAutoTriangleParking extends LinearOpMode {
 
         // While loop that moves to the left
         // run.time should equal seconds
-        while (run.milliseconds() < 0.75 && !isStopRequested()) {
+        while (run.milliseconds() <741 && !isStopRequested()) {
             fL.setPower(-1);
             fR.setPower(1);
             bL.setPower(1);
@@ -59,5 +59,3 @@ public class RedAutoTriangleParking extends LinearOpMode {
 
     }
 }
-
-

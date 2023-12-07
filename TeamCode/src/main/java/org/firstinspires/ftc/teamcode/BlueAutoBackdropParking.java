@@ -43,7 +43,7 @@ public class BlueAutoBackdropParking extends LinearOpMode {
 
         // While loop that moves to the left
         // run.time should equal seconds
-        while (run.milliseconds() <741 && !isStopRequested()) {
+        while (run.milliseconds() <690 && !isStopRequested()) {
             fL.setPower(-1);
             fR.setPower(1);
             bL.setPower(1);

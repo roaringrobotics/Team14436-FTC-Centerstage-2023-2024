@@ -31,6 +31,8 @@ public class MecanumDriveTrain extends LinearOpMode {
     double denominator;
     double rotX;
     double rotY;
+
+    // TODO: Remove, not needed as you don't use it for anything
     double botHeading;
     double y;
     double x;

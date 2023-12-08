@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
 public class RedAutoBackdropParking extends LinearOpMode {
@@ -15,6 +16,11 @@ public class RedAutoBackdropParking extends LinearOpMode {
     DcMotor bL;
     DcMotor bR;
 
+    Servo OF;
+    Servo Blueflip;
+    Servo Blackflip;
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -23,6 +29,9 @@ public class RedAutoBackdropParking extends LinearOpMode {
         fR = hardwareMap.dcMotor.get("frontRight");
         bL = hardwareMap.dcMotor.get("backLeft");
         bR = hardwareMap.dcMotor.get("backRight");
+        OF = hardwareMap.servo.get("OutFlip");
+        Blackflip = hardwareMap.servo.get("Blackflip");
+        Blueflip = hardwareMap.servo.get("Blueflip");
 
         fL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -43,11 +52,11 @@ public class RedAutoBackdropParking extends LinearOpMode {
 
         // While loop that moves to the left
         // run.time should equal seconds
-        while (run.milliseconds() <690 && !isStopRequested()) {
-            fL.setPower(1);
+        while (run.milliseconds() <500 && !isStopRequested()) {
+            fL.setPower(-1);
             fR.setPower(-1);
             bL.setPower(-1);
-            bR.setPower(1);
+            bR.setPower(-1);
         }
 
         run.reset();
@@ -57,7 +66,36 @@ public class RedAutoBackdropParking extends LinearOpMode {
         bL.setPower(0);
         bR.setPower(0);
 
+        // Wait till outtake action
+
+        wait(1);
+        Blackflip.setPosition(0.8);
+        Blueflip.setPosition(0.8);
+
+        wait(1);
+
+       while (run.milliseconds()<150 && !isStopRequested()) {
+           fL.setPower(-1);
+           fR.setPower(-1);
+           bL.setPower(-1);
+           bR.setPower(-1);
+       }
+        run.reset();
+
+        fL.setPower(0);
+        fR.setPower(0);
+        bL.setPower(0);
+        bR.setPower(0);
+
+
+
+
+
     }
+
+
+
+
 }
 
 

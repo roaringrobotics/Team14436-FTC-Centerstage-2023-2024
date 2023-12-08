@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
@@ -17,6 +19,11 @@ public class MecanumDriveTrain extends LinearOpMode {
     DcMotor Bluelift;
     DcMotor blueIntake;
     DcMotor BlackLift;
+    Servo Flap;
+    Servo Blueflip;
+    Servo Blackflip;
+    Servo OutFlip;
+
     double frontLeftPower;
     double frontRightPower;
     double backLeftPower;
@@ -38,10 +45,15 @@ public class MecanumDriveTrain extends LinearOpMode {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         BlackLift = hardwareMap.get(DcMotor.class, "Blacklift");
+        OutFlip = hardwareMap.get(Servo.class,"OutFlip");
+        Blackflip = hardwareMap.get(Servo.class,"Blackflip");
+        Blueflip = hardwareMap.get(Servo.class,"Blueflip");
+        Flap = hardwareMap.get(Servo.class,"Flap");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         Bluelift.setDirection(DcMotorSimple.Direction.REVERSE);
+        Blackflip.setDirection(Servo.Direction.REVERSE);
 
         blueIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Bluelift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -63,13 +75,23 @@ public class MecanumDriveTrain extends LinearOpMode {
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
-            drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x,
+            drive(gamepad1.left_stick_y,-gamepad1.left_stick_x,gamepad1.right_stick_x,
                 imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
             if (gamepad2.a){
                 blueIntake.setPower(1);
             } else {
                 blueIntake.setPower(0);
+            }
+            if (gamepad2.y){
+              Blueflip.setPosition(1);
+              Blackflip.setPosition(1);
+            } else {
+                Blueflip.setPosition(1);
+                Blackflip.setPosition(1);
+            }
+            if (gamepad2.b){
+
             }
 
 

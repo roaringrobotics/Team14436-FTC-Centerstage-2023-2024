@@ -8,7 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.apache.commons.math3.analysis.function.Power;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+import java.util.ArrayList;
 
 @TeleOp
 public class MecanumDriveTrain extends LinearOpMode {
@@ -32,11 +35,16 @@ public class MecanumDriveTrain extends LinearOpMode {
     double rotX;
     double rotY;
 
-    // TODO: Remove, not needed as you don't use it for anything
     double botHeading;
     double y;
     double x;
     double rx;
+
+    double slow;
+
+    ArrayList<Boolean> booleanArray = new ArrayList<>();
+    int booleanIncrementer = 0;
+    boolean y2Pressed;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -73,29 +81,34 @@ public class MecanumDriveTrain extends LinearOpMode {
 
         imu.initialize(parameters);
 
+        Blueflip.setPosition(1);
+        Blackflip.setPosition(1);
+        OutFlip.setPosition(1);
 
         waitForStart();
+
         while (opModeIsActive() && !isStopRequested()) {
 
             drive(gamepad1.left_stick_y,-gamepad1.left_stick_x,gamepad1.right_stick_x,
                 imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+
+            if(gamepad1.right_bumper){
+
+            }
 
             if (gamepad2.a){
                 blueIntake.setPower(1);
             } else {
                 blueIntake.setPower(0);
             }
-            if (gamepad2.y){
-              Blueflip.setPosition(1);
-              Blackflip.setPosition(1);
+
+            if (y2Pressed){
+              Blueflip.setPosition(0);
+              Blackflip.setPosition(0);
             } else {
                 Blueflip.setPosition(1);
                 Blackflip.setPosition(1);
             }
-            if (gamepad2.b){
-
-            }
-
 
             if(gamepad2.dpad_down){
                 Bluelift.setPower(-1);
@@ -107,10 +120,20 @@ public class MecanumDriveTrain extends LinearOpMode {
                 Bluelift.setPower(0);
                 BlackLift.setPower(0);
             }
+
+            y2Pressed = ifPressed(gamepad2.y);
+           //ALWAYS have boolean Incrementer as last.
+            booleanIncrementer = 0;
         }
     }
 
     private void drive(double x, double y, double rx, double botHeading){
+
+        if (gamepad1.left_bumper) {
+            slow = 0.75;
+        } else {
+            slow = 0;
+        }
 
         rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
@@ -123,9 +146,33 @@ public class MecanumDriveTrain extends LinearOpMode {
         backLeftPower = (rotY - rotX + rx) / denominator;
         backRightPower = (rotY + rotX - rx) / denominator;
 
-        frontLeft.setPower(frontLeftPower);
-        backLeft.setPower(backLeftPower);
-        frontRight.setPower(frontRightPower);
-        backRight.setPower(backRightPower);
+
+        frontLeft.setPower(frontLeftPower * slow);
+        backLeft.setPower(backLeftPower * slow);
+        frontRight.setPower(frontRightPower * slow);
+        backRight.setPower(backRightPower * slow);
+
     }
+
+    // LIST: [true, ]
+
+        private boolean ifPressed(boolean button) {
+            boolean output = false;
+
+            if (booleanArray.size() == booleanIncrementer) {
+                booleanArray.add(false);
+            }
+
+            boolean buttonWas = booleanArray.get(booleanIncrementer);
+
+            //noinspection PointlessBooleanExpression
+            if (button != buttonWas && button == true) {
+                output = true;
+            }
+            booleanArray.set(booleanIncrementer, button);
+
+            booleanIncrementer = booleanIncrementer + 1;
+
+            return output;
+        }
 }

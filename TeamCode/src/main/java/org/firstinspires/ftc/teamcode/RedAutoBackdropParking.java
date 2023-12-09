@@ -52,7 +52,7 @@ public class RedAutoBackdropParking extends LinearOpMode {
 
         // While loop that moves to the left
         // run.time should equal seconds
-        while (run.milliseconds() <500 && !isStopRequested()) {
+        while (run.milliseconds() <575 && !isStopRequested()) {
             fL.setPower(-1);
             fR.setPower(-1);
             bL.setPower(-1);
@@ -61,18 +61,25 @@ public class RedAutoBackdropParking extends LinearOpMode {
 
         run.reset();
 
-        fL.setPower(0);
-        fR.setPower(0);
-        bL.setPower(0);
-        bR.setPower(0);
 
         // Wait till outtake action
+         while (run.milliseconds()<350 && !isStopRequested()){
+            fL.setPower(0);
+            fR.setPower(0);
+            bL.setPower(0);
+            bR.setPower(0);
+        }
+        run.reset();
 
-        wait(1);
-        Blackflip.setPosition(0.8);
-        Blueflip.setPosition(0.8);
+         Blackflip.setPosition(0);
+         Blueflip.setPosition(0);
+         OF.setPosition(0.1);
 
-        wait(1);
+
+        while (run.milliseconds()<350 && !isStopRequested()){
+            OF.setPosition(0.5);
+        }
+run.reset();
 
        while (run.milliseconds()<150 && !isStopRequested()) {
            fL.setPower(-1);
@@ -86,11 +93,6 @@ public class RedAutoBackdropParking extends LinearOpMode {
         fR.setPower(0);
         bL.setPower(0);
         bR.setPower(0);
-
-
-
-
-
     }
 
 

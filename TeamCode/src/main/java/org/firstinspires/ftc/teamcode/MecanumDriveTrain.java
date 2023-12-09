@@ -42,6 +42,8 @@ public class MecanumDriveTrain extends LinearOpMode {
 
     double slow;
 
+    static slide slide=MecanumDriveTrain.slide.collapsed;
+
     ArrayList<Boolean> booleanArray = new ArrayList<>();
     int booleanIncrementer = 0;
     boolean y2Pressed;
@@ -81,10 +83,10 @@ public class MecanumDriveTrain extends LinearOpMode {
 
         imu.initialize(parameters);
 
-        Blueflip.setPosition(1);
-        Blackflip.setPosition(1);
+        Blueflip.setPosition(0.9);
+        Blackflip.setPosition(0.9);
         OutFlip.setPosition(1);
-
+        MecanumDriveTrain.slide = MecanumDriveTrain.slide.collapsed;
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -92,22 +94,43 @@ public class MecanumDriveTrain extends LinearOpMode {
             drive(gamepad1.left_stick_y,-gamepad1.left_stick_x,gamepad1.right_stick_x,
                 imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
-            if(gamepad1.right_bumper){
+            y = -gamepad1.left_stick_y;
+            x = gamepad1.left_stick_x;
+            rx = gamepad1.right_stick_x;
 
-            }
+            frontLeft.setPower(y + x + rx);
+            backLeft.setPower(y - x + rx);
+            frontRight.setPower(y - x - rx);
+            backRight.setPower(y + x - rx);
 
-            if (gamepad2.a){
+            if (gamepad2.right_trigger>0.5){
                 blueIntake.setPower(1);
-            } else {
+            } else if (gamepad2.right_trigger<=0.5){
                 blueIntake.setPower(0);
             }
 
             if (y2Pressed){
-              Blueflip.setPosition(0);
-              Blackflip.setPosition(0);
-            } else {
-                Blueflip.setPosition(1);
-                Blackflip.setPosition(1);
+            switch (slide){
+                case extended:
+                    Blackflip.setPosition(0);
+                    Blueflip.setPosition(0);
+                    OutFlip.setPosition(0.1);
+                    slide=MecanumDriveTrain.slide.tip;
+                    break;
+                case collapsed:
+                    Blackflip.setPosition(0.9);
+                    Blueflip.setPosition(0.9);
+                    OutFlip.setPosition(1);
+                    slide=MecanumDriveTrain.slide.extended;
+                    break;
+                case tip:
+                    Blackflip.setPosition(0);
+                    Blueflip.setPosition(0);
+                    OutFlip.setPosition(0.5);
+                    slide=MecanumDriveTrain.slide.collapsed;
+                    break;
+
+            }
             }
 
             if(gamepad2.dpad_down){
@@ -129,11 +152,11 @@ public class MecanumDriveTrain extends LinearOpMode {
 
     private void drive(double x, double y, double rx, double botHeading){
 
-        if (gamepad1.left_bumper) {
-            slow = 0.75;
-        } else {
-            slow = 0;
-        }
+       // if (gamepad1.left_bumper) {
+            //slow = 0.75;
+        //} else {
+          //  slow = 0;
+        //}
 
         rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
@@ -174,5 +197,8 @@ public class MecanumDriveTrain extends LinearOpMode {
             booleanIncrementer = booleanIncrementer + 1;
 
             return output;
+        }
+        private enum slide{
+        extended,collapsed,tip
         }
 }

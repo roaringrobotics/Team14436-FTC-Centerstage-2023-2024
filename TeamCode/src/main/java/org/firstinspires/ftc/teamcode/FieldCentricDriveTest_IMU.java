@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import android.bluetooth.BluetoothDevice;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 @TeleOp
 public class FieldCentricDriveTest_IMU extends LinearOpMode {
 
-    DcMotorEx frontLeft, frontRight, backRight, backLeft, blueIntake, Bluelift;
+    DcMotorEx frontLeft, frontRight, backRight, backLeft, blueIntake; //Bluelift;
     IMU imu;
 
     @Override
@@ -26,9 +25,9 @@ public class FieldCentricDriveTest_IMU extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
-        Bluelift = hardwareMap.get(DcMotorEx.class, " Bluelift");
-        blueIntake = hardwareMap.get(DcMotorEx.class, " blueIntake");
-        imu = hardwareMap.get(BHI260IMU.class, "imu");
+        //Bluelift = hardwareMap.get(DcMotorEx.class, " Bluelift");
+        //blueIntake = hardwareMap.get(DcMotorEx.class, " blueIntake");
+        imu = hardwareMap.get(IMU.class, "imu");
 
 
 

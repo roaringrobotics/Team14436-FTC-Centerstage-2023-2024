@@ -19,13 +19,14 @@ public class MecanumDriveTrain extends LinearOpMode {
     DcMotor frontLeft;
     DcMotor frontRight;
     DcMotor backRight;
-    DcMotor Bluelift;
-    DcMotor blueIntake;
-    DcMotor BlackLift;
-    Servo Flap;
-    Servo Blueflip;
-    Servo Blackflip;
-    Servo OutFlip;
+    //DcMotor Bluelift;
+    //DcMotor blueIntake;
+    //DcMotor BlackLift;
+    //Servo Flap;
+    //Servo Blueflip;
+    //Servo Blackflip;
+    //Servo OutFlip;
+    IMU Imu;
 
     double frontLeftPower;
     double frontRightPower;
@@ -42,7 +43,7 @@ public class MecanumDriveTrain extends LinearOpMode {
 
     double slow;
 
-    static slide slide=MecanumDriveTrain.slide.collapsed;
+    //static slide slide=MecanumDriveTrain.slide.collapsed;
 
     ArrayList<Boolean> booleanArray = new ArrayList<>();
     int booleanIncrementer = 0;
@@ -50,30 +51,30 @@ public class MecanumDriveTrain extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        blueIntake = hardwareMap.get(DcMotor.class, "blueIntake");
-        Bluelift = hardwareMap.get(DcMotor.class, "Bluelift");
+        //blueIntake = hardwareMap.get(DcMotor.class, "blueIntake");
+        //Bluelift = hardwareMap.get(DcMotor.class, "Bluelift");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        BlackLift = hardwareMap.get(DcMotor.class, "Blacklift");
-        OutFlip = hardwareMap.get(Servo.class,"OutFlip");
-        Blackflip = hardwareMap.get(Servo.class,"Blackflip");
-        Blueflip = hardwareMap.get(Servo.class,"Blueflip");
-        Flap = hardwareMap.get(Servo.class,"Flap");
+        //BlackLift = hardwareMap.get(DcMotor.class, "Blacklift");
+        //OutFlip = hardwareMap.get(Servo.class,"OutFlip");
+        //Blackflip = hardwareMap.get(Servo.class,"Blackflip");
+        //Blueflip = hardwareMap.get(Servo.class,"Blueflip");
+        //Flap = hardwareMap.get(Servo.class,"Flap");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        Bluelift.setDirection(DcMotorSimple.Direction.REVERSE);
-        Blackflip.setDirection(Servo.Direction.REVERSE);
+        //Bluelift.setDirection(DcMotorSimple.Direction.REVERSE);
+        //Blackflip.setDirection(Servo.Direction.REVERSE);
 
-        blueIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Bluelift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //blueIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //Bluelift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BlackLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //BlackLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
@@ -83,10 +84,12 @@ public class MecanumDriveTrain extends LinearOpMode {
 
         imu.initialize(parameters);
 
-        Blueflip.setPosition(0.9);
+        /*Blueflip.setPosition(0.9);
         Blackflip.setPosition(0.9);
         OutFlip.setPosition(1);
+        Flap.setPosition(0);
         MecanumDriveTrain.slide = MecanumDriveTrain.slide.collapsed;
+         */
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -97,31 +100,30 @@ public class MecanumDriveTrain extends LinearOpMode {
             y = -gamepad1.left_stick_y;
             x = gamepad1.left_stick_x;
             rx = gamepad1.right_stick_x;
-
             frontLeft.setPower(y + x + rx);
             backLeft.setPower(y - x + rx);
             frontRight.setPower(y - x - rx);
             backRight.setPower(y + x - rx);
 
-            if (gamepad2.right_trigger>0.5){
-                blueIntake.setPower(1);
-            } else if (gamepad2.right_trigger<=0.5){
-                blueIntake.setPower(0);
-            }
+            //if (gamepad1.right_trigger>0.5){
+                //blueIntake.setPower(1);
+            //} else if (gamepad2.right_trigger<=0.5){
+              //  blueIntake.setPower(0);
+           // }
 
-            if (y2Pressed){
+            /*if (y2Pressed){
             switch (slide){
-                case extended:
-                    Blackflip.setPosition(0);
-                    Blueflip.setPosition(0);
-                    OutFlip.setPosition(0.1);
-                    slide=MecanumDriveTrain.slide.tip;
-                    break;
+                //case extended:
+                    //Blackflip.setPosition(0);
+                    //Blueflip.setPosition(0);
+                    //OutFlip.setPosition(0.1);
+                    //slide=MecanumDriveTrain.slide.tip;
+                    //break;
                 case collapsed:
                     Blackflip.setPosition(0.9);
                     Blueflip.setPosition(0.9);
                     OutFlip.setPosition(1);
-                    slide=MecanumDriveTrain.slide.extended;
+                    slide=MecanumDriveTrain.slide.tip;
                     break;
                 case tip:
                     Blackflip.setPosition(0);
@@ -131,32 +133,38 @@ public class MecanumDriveTrain extends LinearOpMode {
                     break;
 
             }
+            */}
+
+           /* if (gamepad2.a){
+                Flap.setPosition(1);
+            } else {
+                Flap.setPosition(0);
             }
 
             if(gamepad2.dpad_down){
-                Bluelift.setPower(-1);
-                BlackLift.setPower(-1);
-            } else if (gamepad2.dpad_up) {
                 Bluelift.setPower(1);
                 BlackLift.setPower(1);
+            } else if (gamepad2.dpad_up) {
+                Bluelift.setPower(-1);
+                BlackLift.setPower(-1);
             } else {
                 Bluelift.setPower(0);
                 BlackLift.setPower(0);
-            }
+           */ }
 
-            y2Pressed = ifPressed(gamepad2.y);
+           // y2Pressed = ifPressed(gamepad2.y);
            //ALWAYS have boolean Incrementer as last.
-            booleanIncrementer = 0;
-        }
-    }
+            //booleanIncrementer = 0;
+        //}
+    //}
 
     private void drive(double x, double y, double rx, double botHeading){
 
-       // if (gamepad1.left_bumper) {
-            //slow = 0.75;
-        //} else {
-          //  slow = 0;
-        //}
+        if (gamepad1.left_bumper) {
+            slow = 0.75;
+        } else {
+            slow = 0;
+        }
 
         rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
@@ -170,16 +178,16 @@ public class MecanumDriveTrain extends LinearOpMode {
         backRightPower = (rotY + rotX - rx) / denominator;
 
 
-        frontLeft.setPower(frontLeftPower * slow);
-        backLeft.setPower(backLeftPower * slow);
-        frontRight.setPower(frontRightPower * slow);
-        backRight.setPower(backRightPower * slow);
+        frontLeft.setPower(frontLeftPower );
+        backLeft.setPower(backLeftPower );
+        frontRight.setPower(frontRightPower );
+        backRight.setPower(backRightPower);
 
     }
 
     // LIST: [true, ]
 
-        private boolean ifPressed(boolean button) {
+      /*  private boolean ifPressed(boolean button) {
             boolean output = false;
 
             if (booleanArray.size() == booleanIncrementer) {
@@ -199,6 +207,8 @@ public class MecanumDriveTrain extends LinearOpMode {
             return output;
         }
         private enum slide{
-        extended,collapsed,tip
-        }
+*/
+        // add extended
+        //collapsed,tip
+        //}
 }

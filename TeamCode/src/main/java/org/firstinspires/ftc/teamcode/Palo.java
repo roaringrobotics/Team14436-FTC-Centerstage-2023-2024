@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @TeleOp
 
-public class  Palo extends LinearOpMode {
+public class Palo extends LinearOpMode {
     DcMotor backLeft;
     DcMotor frontLeft;
     DcMotor frontRight;
@@ -42,7 +42,11 @@ public class  Palo extends LinearOpMode {
 
     double slow;
 
-static slide slide=Palo.slide.collapsed;
+    ArrayList<Boolean> booleanArray = new ArrayList<>();
+    int booleanIncrementer = 0;
+    boolean y2Pressed;
+
+    Slide slide = Slide.tip;
 
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -71,122 +75,119 @@ static slide slide=Palo.slide.collapsed;
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
 
-        // CHange Motors
-        Blueflip.setPosition(0.9);
-        Blackflip.setPosition(0.9);
-        OutFlip.setPosition(1);
-        Flap.setPosition(0);
-        MecanumDriveTrain.slide = MecanumDriveTrain.slide.collapsed;
-
-        ArrayList<Boolean> booleanArray = new ArrayList<>();
-
-        int booleanIncrementer = 0;
-
-        boolean y2Pressed;
+        // CHange servos.setPosition(0.9);
+        blueBar.setPosition(0.9);
+        blackBar.setPosition(1);
+        intakeFlip.setPosition(0);
 
         waitForStart();
 
-        if (isStopRequested()) return;
+        while (opModeIsActive() && !isStopRequested()) {
 
-        while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad1.left_stick_x;
-            double rx = gamepad1.right_stick_x;
-            y = -gamepad1.left_stick_y;
-            x = gamepad1.left_stick_x;
-            rx = gamepad1.right_stick_x;
+            if (isStopRequested()) return;
+
+            drive(-gamepad1.left_stick_y,gamepad1.left_stick_x, gamepad1.right_stick_x, imu);
 
             if (gamepad1.options) {
                 imu.resetYaw();
             }
 
-            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-
-            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-
-            rotX = rotX * 1.1;
-            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-            double frontLeftPower = (rotY + rotX + rx) / denominator;
-            double backLeftPower = (rotY - rotX + rx) / denominator;
-            double frontRightPower = (rotY - rotX - rx) / denominator;
-            double backRightPower = (rotY + rotX - rx) / denominator;
-
-            frontLeft.setPower(frontLeftPower);
-            backLeft.setPower(backLeftPower);
-            frontRight.setPower(frontRightPower);
-            backRight.setPower(backRightPower);
-
-            if (gamepad1.right_trigger>0.5){
-            inTake.setPower(1);
-            } else if (gamepad2.right_trigger<=0.5){
-              inTake.setPower(0);
-             }
-
-            if (y2Pressed){
-            switch (slide){
-                case extended:
-                    Blackflip.setPosition(0);
-                    Blueflip.setPosition(0);
-                    OutFlip.setPosition(0.1);
-                    slide=MecanumDriveTrain.slide.tip;
-                    break;
-                case collapsed:
-                    Blackflip.setPosition(0.9);
-                    Blueflip.setPosition(0.9);
-                    OutFlip.setPosition(1);
-                    slide=MecanumDriveTrain.slide.tip;
-                    break;
-                case tip:
-                    Blackflip.setPosition(0);
-                    Blueflip.setPosition(0);
-                    OutFlip.setPosition(0.5);
-                    slide=MecanumDriveTrain.slide.collapsed;
-                    break;
-
+            if (gamepad1.right_trigger > 0.5) {
+                inTake.setPower(1);
+            } else if (gamepad2.right_trigger >= 0.5) {
+                inTake.setPower(0);
             }
 
+            //Inside this statement, change the servos/motors to the correct ones
+            //It is not correct due to i cant properly see the robot
+            if (y2Pressed) {
+                switch (slide) {
+                    case extended:
+                        blackBar.setPosition(0);
+                        blueBar.setPosition(0);
+                        intakeFlip.setPosition(0.1);
+                        slide = Slide.tip;
+                        break;
+                    case collapsed:
+                        blackBar.setPosition(0.9);
+                        blueBar.setPosition(0.9);
+                        intakeFlip.setPosition(1);
+                        slide = Slide.tip;
+                        break;
+                    case tip:
+                        blackBar.setPosition(0);
+                        blueBar.setPosition(0);
+                        intakeFlip.setPosition(0.5);
+                        slide = Slide.collapsed;
+                        break;
+                }
+            }
 
-            if (gamepad2.a){
-                Flap.setPosition(1);
+            if (gamepad2.a) {
+                intakeFlip.setPosition(1);
             } else {
-                Flap.setPosition(0);
+                intakeFlip.setPosition(0);
             }
 
-            if(gamepad2.dpad_down){
-                Bluelift.setPower(1);
-                BlackLift.setPower(1);
+            if (gamepad2.dpad_down) {
+                blueLift.setPower(1);
+                blueLift.setPower(1);
             } else if (gamepad2.dpad_up) {
-                Bluelift.setPower(-1);
-                BlackLift.setPower(-1);
+                blueLift.setPower(-1);
+                blueLift.setPower(-1);
             } else {
-                Bluelift.setPower(0);
-                BlackLift.setPower(0);
+                blueLift.setPower(0);
+                blueLift.setPower(0);
             }
 
-     y2Pressed = ifPressed(gamepad2.y);
-    ALWAYS have boolean Incrementer as last.
-    booleanIncrementer = 0;
-    }
-             //LIST:[true]
-
-            private boolean ifPressed(boolean button) {
-                boolean output = false;
-                if (booleanArray.size() == booleanIncrementer) {
-                    booleanArray.add(false);
-                }
-                boolean buttonWas = booleanArray.get(booleanIncrementer);
-                //noinspection PointlessBooleanExpression
-                if (button != buttonWas && button == true) {
-                    output = true;
-                }
-                booleanArray.set(booleanIncrementer, button);
-                booleanIncrementer = booleanIncrementer + 1;
-
-                return output;
-            }
-            private enum slide{
-                extended,collapsed,tip
-            }
+            y2Pressed = ifPressed(gamepad2.y);
+            //ALWAYS have boolean Incrementer as last.
+            booleanIncrementer = 0;
         }
+    }
+
+    private boolean ifPressed(boolean button) {
+        boolean output = false;
+        if (booleanArray.size() == booleanIncrementer) {
+            booleanArray.add(false);
+        }
+        boolean buttonWas = booleanArray.get(booleanIncrementer);
+        //noinspection PointlessBooleanExpression
+        if (button != buttonWas && button == true) {
+            output = true;
+        }
+        booleanArray.set(booleanIncrementer, button);
+        booleanIncrementer = booleanIncrementer + 1;
+
+        return output;
+    }
+
+    private enum Slide {
+        collapsed,
+        tip,
+        extended,
+    }
+
+    private void drive(double y, double x, double rx, IMU imu) {
+
+        if (gamepad1.options) {
+            imu.resetYaw();
+        }
+
+        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+        rotX = rotX * 1.1;
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        frontLeft.setPower(frontLeftPower);
+        backLeft.setPower(backLeftPower);
+        frontRight.setPower(frontRightPower);
+        backRight.setPower(backRightPower);
+    }
+}

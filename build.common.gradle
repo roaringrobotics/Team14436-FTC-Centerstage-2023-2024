@@ -99,10 +99,6 @@ android {
         debug {
             debuggable true
             jniDebuggable true
-            ndk {
-                //noinspection ChromeOsAbiSupport
-                abiFilters "armeabi-v7a"
-            }
         }
     }
 
@@ -119,5 +115,7 @@ android {
 }
 
 repositories {
+    mavenCentral()
 }
+
 

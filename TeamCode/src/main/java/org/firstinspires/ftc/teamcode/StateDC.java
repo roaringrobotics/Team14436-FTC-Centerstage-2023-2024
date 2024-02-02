@@ -113,7 +113,7 @@ public class StateDC extends LinearOpMode {
         //blueFlap.setPosition(0.85);
         //blackFlap.setPosition(0);
 
-        StateDC.dropoffServos = StateDC.dropoffServos.Closed;
+        StateDC.dropoffServos = DropoffServos.Closed;
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {

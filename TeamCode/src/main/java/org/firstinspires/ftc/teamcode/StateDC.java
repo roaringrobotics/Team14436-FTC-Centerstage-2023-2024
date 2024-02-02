@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
+ import org.apache.commons.math3.analysis.function.Power;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import java.util.ArrayList;
@@ -61,8 +61,8 @@ public class StateDC extends LinearOpMode {
     boolean a2Pressed;
     boolean y2Pressed;
 
-    Slide slide = Slide.tip;
-    DropoffServos dropoffServos = DropoffServos.Closed;
+    static Slide slide = Slide.tip;
+     static DropoffServos dropoffServos = DropoffServos.Closed;
     Score score = Score.In;
 
 
@@ -113,6 +113,7 @@ public class StateDC extends LinearOpMode {
         //blueFlap.setPosition(0.85);
         //blackFlap.setPosition(0);
 
+        StateDC.dropoffServos = StateDC.dropoffServos.Closed;
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -195,8 +196,9 @@ public class StateDC extends LinearOpMode {
                 blueHook.setPower(0);
                 blackHook.setPower(0);
             }
-           
+           x2Pressed = ifPressed(gamepad2.x);
 
+            booleanIncrementer = 0;
             //Inside this statement, change the servos/motors to the correct ones
             //It is not correct due to i cant properly see the robot
             if (y2Pressed) {
@@ -218,7 +220,7 @@ public class StateDC extends LinearOpMode {
         }
     }
 
-    boolean override = false;
+
     private boolean ifPressed(boolean button) {
         boolean output = false;
         if (booleanArray.size() == booleanIncrementer) {

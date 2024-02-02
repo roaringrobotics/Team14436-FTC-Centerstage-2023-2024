@@ -67,7 +67,7 @@ public class StateDC extends LinearOpMode {
 
 
 
-
+    @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
@@ -104,12 +104,11 @@ public class StateDC extends LinearOpMode {
 
         // CHange servos.setPosition(0.9);
         outtakeFlip.setPosition(0.5);
-
         Liftservo.setPosition(0.2);
         blackIntake.setPosition(0);
         blueIntake.setPosition(1);
-        blackBar.setPosition(0.5);
-        blueBar.setPosition(0.5);
+        blackBar.setPosition(1);
+        blueBar.setPosition(0);
         //blueFlap.setPosition(0.85);
         //blackFlap.setPosition(0);
 
@@ -134,30 +133,20 @@ public class StateDC extends LinearOpMode {
                 inTake.setPower(0);
             }
 
-            if (gamepad2.a){
-                blackFlap.setPosition(0.9);
-                blueFlap.setPosition(0.1);
-            } else {
-                blackFlap.setPosition(0);
-                blueFlap.setPosition(0.55);
-            }
+            if (gamepad1.dpad_left){
 
-            if (gamepad2.dpad_left){
-                blackIntake.setPosition(0.40);
-                blueIntake.setPosition(0.40);
-                blackBar.setPosition(0.12);
-                blueBar.setPosition(0.8);
-            } else if (gamepad2.dpad_right) {
-                blackIntake.setPosition(0);
-                blueIntake.setPosition(1);
-                blackBar.setPosition(0.5);
-                blueBar.setPosition(0.5);
+                blackBar.setPosition(1);
+                blueBar.setPosition(0);
+            } else if (gamepad1.dpad_right) {
+
+                blackBar.setPosition(0);
+                blueBar.setPosition(1);
             }
             if (x2Pressed){
                 switch (dropoffServos){
                     case Open:
                         blackFlap.setPosition(1);
-                        blueFlap.setPosition(1);
+                        blueFlap.setPosition(0.85);
                         dropoffServos = DropoffServos.Closed;
                         break;
                     case Closed:
@@ -166,16 +155,6 @@ public class StateDC extends LinearOpMode {
                         dropoffServos = DropoffServos.Open;
                         break;
                 }
-            }
-            if (gamepad2.x) {
-                Liftservo.setPosition(0.7);
-            } else {
-                Liftservo.setPosition(0.2);
-            }
-            if (gamepad2.y){
-                outtakeFlip.setPosition(0.35);
-            } else {
-                outtakeFlip.setPosition(0.5);
             }
 
             if (gamepad2.dpad_up){
@@ -197,10 +176,10 @@ public class StateDC extends LinearOpMode {
                 blackHook.setPower(0);
             }
            x2Pressed = ifPressed(gamepad2.x);
+            y2Pressed = ifPressed(gamepad2.y);
 
             booleanIncrementer = 0;
-            //Inside this statement, change the servos/motors to the correct ones
-            //It is not correct due to i cant properly see the robot
+
             if (y2Pressed) {
                 switch (score) {
                     case In:

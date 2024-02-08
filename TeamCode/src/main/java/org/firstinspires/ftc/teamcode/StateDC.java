@@ -61,9 +61,9 @@ public class StateDC extends LinearOpMode {
     boolean a2Pressed;
     boolean y2Pressed;
 
-    static Slide slide = Slide.tip;
+    static Score score = Score.collapsed;
      static DropoffServos dropoffServos = DropoffServos.Closed;
-    Score score = Score.In;
+    Intake intake = Intake.In;
 
 
 
@@ -103,14 +103,14 @@ public class StateDC extends LinearOpMode {
         imu.initialize(parameters);
 
         // CHange servos.setPosition(0.9);
-        outtakeFlip.setPosition(0.5);
-        Liftservo.setPosition(0.2);
-        blackIntake.setPosition(0);
-        blueIntake.setPosition(1);
-        blackBar.setPosition(1);
-        blueBar.setPosition(0);
-        //blueFlap.setPosition(0.85);
-        //blackFlap.setPosition(0);
+        outtakeFlip.setPosition(0.95);
+        Liftservo.setPosition(0.18);
+        blackIntake.setPosition(0.45);
+        blueIntake.setPosition(0.55);
+        blackBar.setPosition(0.67);
+        blueBar.setPosition(0.33);
+        blueFlap.setPosition(0.55);
+        blackFlap.setPosition(0);
 
         StateDC.dropoffServos = DropoffServos.Closed;
         waitForStart();
@@ -133,28 +133,23 @@ public class StateDC extends LinearOpMode {
                 inTake.setPower(0);
             }
 
-            if (gamepad1.dpad_left){
-
-                blackBar.setPosition(1);
-                blueBar.setPosition(0);
-            } else if (gamepad1.dpad_right) {
-
+            if (gamepad2.dpad_right) {// Out
                 blackBar.setPosition(0);
                 blueBar.setPosition(1);
+                blackIntake.setPosition(0.75);
+                blueIntake.setPosition(0.25);
+            } else if (gamepad2.dpad_left) { //In
+                blackIntake.setPosition(0.45);
+                blueIntake.setPosition(0.55);
+                blackBar.setPosition(0.7);
+                blueBar.setPosition(0.3);
             }
-            if (x2Pressed){
-                switch (dropoffServos){
-                    case Open:
-                        blackFlap.setPosition(1);
-                        blueFlap.setPosition(0.85);
-                        dropoffServos = DropoffServos.Closed;
-                        break;
-                    case Closed:
-                        blackFlap.setPosition(0);
-                        blueFlap.setPosition(0);
-                        dropoffServos = DropoffServos.Open;
-                        break;
-                }
+            if (gamepad2.x){
+                blueFlap.setPosition(0);
+                blackFlap.setPosition(0.55);
+            } else {
+                blackFlap.setPosition(0);
+                blueFlap.setPosition(0.55);
             }
 
             if (gamepad2.dpad_up){
@@ -164,7 +159,16 @@ public class StateDC extends LinearOpMode {
             } else {
                 blueLift.setPower(0);
             }
-
+            if (gamepad2.y) {//out
+                Liftservo.setPosition(0.8);
+            }else {
+                Liftservo.setPosition(0.18);
+            }
+            if (gamepad2.b){
+                outtakeFlip.setPosition(0.5);
+            } else {
+                outtakeFlip.setPosition(0.95);
+            }
             if (gamepad2.right_bumper){
                 blueHook.setPower(1);
                 blackHook.setPower(1);
@@ -175,29 +179,13 @@ public class StateDC extends LinearOpMode {
                 blueHook.setPower(0);
                 blackHook.setPower(0);
             }
-           x2Pressed = ifPressed(gamepad2.x);
-            y2Pressed = ifPressed(gamepad2.y);
 
-            booleanIncrementer = 0;
 
-            if (y2Pressed) {
-                switch (score) {
-                    case In:
-                        outtakeFlip.setPosition(0);
-                        Liftservo.setPosition(0);
-                        score = Score.Out;
-                        break;
-                    case Out:
-                        Liftservo.setPosition(0.6);
-                        outtakeFlip.setPosition(0.4);
-                        score = Score.In;
-                        break;
-                }
+                booleanIncrementer = 0;
             }
 
-
         }
-    }
+
 
 
     private boolean ifPressed(boolean button) {
@@ -220,12 +208,12 @@ public class StateDC extends LinearOpMode {
     private enum DropoffServos{
         Closed,Open
     }
-    private enum Slide {
+    private enum Score {
         collapsed,
         tip,
         extended,
     }
-    private enum Score{
+    private enum Intake{
         In,Out,
     }
     private void drive(double y, double x, double rx, IMU imu) {
